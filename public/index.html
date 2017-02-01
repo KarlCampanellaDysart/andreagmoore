@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="Andrea Gerhauser Moore's personal actor website">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Andrea Moore</title>
+	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	
+</head>
+<body ng-app="AndreaGMoore">
+	
+	<div ui-view></div>
+	<div class="footer">
+		<div class="row" style="text-align: center"><p>&copy; 2017 by Andrea Moore</p></div>
+	</div>
+	</div>
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="bower_components/angular/angular.min.js"></script>
+	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="bower_components/angular-audio/app/angular.audio.js"></script>
+	<script type="text/javascript">
+
+		var app = angular.module("AndreaGMoore", ['ui.router', 'ngAudio']);
+		app.config(function($stateProvider, $urlRouterProvider) {
+    		$urlRouterProvider.otherwise('/home');
+		    $stateProvider
+		        .state('home', {
+		            url: '/home',
+		            templateUrl: 'views/home.html',
+		        }).state('pics', {
+		            url: '/pics',
+		            templateUrl: 'views/pics.html',
+		            controller: 'picsController'
+		        }).state('about', {
+		            url: '/about',
+		            templateUrl: 'views/about.html',
+		            controller: 'aboutController'
+		        }).state('resume', {
+		            url: '/resume',
+		            templateUrl: 'views/resume.html',
+		            controller: 'resumeController'
+		        }).state('reels', {
+		            url: '/reels',
+		            templateUrl: 'views/reels.html',
+		            controller: 'reelsController'
+		        }).state('contact', {
+		            url: '/contact',
+		            templateUrl: 'views/contact.html',
+		            controller: 'contactController'
+		        });       
+		});
+
+	app.service('Data', function ($http, $cacheFactory, ngAudio, $sce) { 
+		var cache = $cacheFactory('main');
+		var contentArr = ['content', 'label'];
+		this.getHome = function (callback) { 
+			if (cache.get('home')) {
+				callback(cache.get('home'));
+			}
+			else {
+				$http.get('api/allAppData').then(function (data) { 
+					var d = data.data[0];
+					d.shift();
+					for (var i =0;i<d.length;i++) {
+						for (var j in contentArr) {
+							var key = contentArr[j];
+							var type = d[i][key].type;
+							d[i][key].type = {};
+							d[i][key].type.image = (type == 'image_link');
+							d[i][key].type.wav = (type == 'wav_link');
+							d[i][key].type.text = (type == 'text');
+						}
+					}
+					cache.put('home', d);
+					callback(d); 
+				}); 
+			} 
+		}
+    	this.getAbout = function (callback) {
+    		if (cache.get('about')) callback(cache.get('about'));
+			else {
+				$http.get('api/allAppData').then(function (data) { 
+					var d = data.data[1];
+					d.shift();
+					for (var i =0;i<d.length;i++) {
+						for (var j in d[i]) {
+							var type = d[i][j].type;
+							d[i][j].type = {};
+							d[i][j].type.image = (type == 'image_link');
+							d[i][j].type.wav = (type == 'wav_link');
+							d[i][j].type.text = (type == 'text');
+						}
+					}
+		    		cache.put('about', d);
+		    		callback(d); 
+	    		});
+			}
+    	}
+    	this.getResume = function (callback) {
+    		if (cache.get('resume')) callback(cache.get('resume'));
+			else {
+				$http.get('api/allAppData').then(function (data) {
+					var d = data.data[2]; 
+					d.shift();
+					for (var i =0;i<d.length;i++) {
+						var type = d[i].content.type;
+						d[i].content.type = {};
+						d[i].content.type.text = (type == 'text');
+						d[i].content.type.image = (type == 'image_link');
+						d[i].content.type.wav = (type == 'wav_link');
+						d[i].content.type.pdf = (type == 'pdf_link');
+						if (type == 'pdf_link') d[i].content.data = $sce.trustAsResourceUrl(d[i].content.data);
+					}
+	    			cache.put('resume', d);
+	    			callback(d);
+	    		}); 
+			}     		
+    	}
+    	this.getReels = function (callback) {
+    		if (cache.get('reels')) callback(cache.get('reels'));
+			else {
+				$http.get('api/allAppData').then(function (data) { 
+					var d = data.data[3];
+					d.shift();
+					for (var i =0;i<d.length;i++) {
+						for (var j in d[i]) {
+							var type = d[i][j].type;
+							d[i][j].type = {};
+							d[i][j].type.text = (type == 'text');
+							d[i][j].type.image = (type == 'image_link');
+							d[i][j].type.wav = (type == 'wav_link');
+							d[i][j].type.video = (type == 'video_link');
+							if (type == 'video_link') d[i][j].data = $sce.trustAsResourceUrl(d[i][j].data);
+							if (type == 'wav_link') d[i][j].data = ngAudio.load(d[i][j].data);
+						}	
+					}
+					cache.put('reels', d);
+	    			callback(d); 
+	    		});
+			}
+    	}
+    	this.getContact = function (callback) {
+    		if (cache.get('contact')) callback(cache.get('contact'));
+			else {
+				$http.get('api/allAppData').then(function (data) {
+					var d = data.data[4];
+					d.shift();
+					for (var i =0;i<d.length;i++) {
+						for (var j in d[i]) {
+							var type = d[i][j].type;
+							d[i][j].type = {};
+							d[i][j].type.image = (type == 'image_link');
+							d[i][j].type.link = (type == 'link');
+							d[i][j].type.text = (type == 'text');
+						}
+					}
+					cache.put('contact', d);
+	    			callback(d);
+	    		});
+			}
+    	}
+	});
+	</script>
+	<script src="controllers/home.js"></script>
+	<script src="controllers/pics.js"></script>
+	<script src="controllers/about.js"></script>
+	<script src="controllers/resume.js"></script>
+	<script src="controllers/reels.js"></script>
+	<script src="controllers/contact.js"></script>
+</body>
+</html>

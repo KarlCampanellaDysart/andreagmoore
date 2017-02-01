@@ -1,0 +1,48 @@
+<div class="container-fluid background">
+	<div class="row" style="text-align: center">
+		<h1>Andrea Moore</h1>
+	</div>
+	<div class="row">
+		<div class="col-sm-12" style="text-align: center">
+			<ul class="topnav list-inline">
+				<li><a ui-sref="home">home</a></li>
+				<li><a ui-sref="pics">photos</a></li>
+				<li><a ui-sref="about">about</a></li>
+	        	<li><a ui-sref="resume">resume</a></li>
+	        	<li><a ui-sref="reels">reels</a></li>
+	        	<li><a ui-sref="contact" class="selected">contact</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="container">	
+	<div ng-if="!contents" style="text-align: center;">
+		<i class="fa fa-spinner fa-spin fa-3x fa-fw" aria-hidden="true"></i>
+	</div>
+	<div ng-repeat="content in contents">
+		<div ng-if="content.content.type.image">
+			<img ng-src="{{content.content.data}}">
+		</div>	
+		<div class="col-sm-6 col-md-4" style="text-align: center">
+			<h3>
+				<i ng-show="isEmail(content.label.data)" class="fa fa-envelope-open-o" aria-hidden="true"></i>
+				<i ng-show="isLinkedIn(content.label.data)" class="fa fa-linkedin-square" aria-hidden="true"></i>
+				<i ng-show="isFacebook(content.label.data)" class="fa fa-facebook-square" aria-hidden="true"></i>
+				<i ng-show="isPhoneNumber(content.label.data)" class="fa fa-mobile" aria-hidden="true"></i>
+				<i ng-show="isTwitter(content.label.data)" class="fa fa-twitter-square" aria-hidden="true"></i>
+				<i ng-show="isIMDB(content.label.data)" class="fa fa-imdb" aria-hidden="true"></i>
+				{{content.label.data}}
+			</h3>
+			<div ng-if="content.content.type.image">
+				<img ng-src="{{content.content.data}}" style="width: 25%">
+			</div>
+			<div ng-if="content.content.type.text">
+				<p>{{content.content.data}}</p>
+			</div>
+			<div ng-if="content.content.type.link">
+				<a href="{{content.content.data}}">{{content.content.data}}</a>
+			</div>
+		</div>
+	</div>
+</div>

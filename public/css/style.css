@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css?family=Arimo');
+body { 
+	background:#f2f2f2;
+	margin-bottom: 5em;
+}
+.background {
+	opacity: 0.75;
+	background-image: url("../images/looking_into_distance.jpg");
+	background-repeat: no-repeat;
+	background-position: 50% 0;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 40px;
+    transition: height 0.15s ease-out;
+    height: auto;
+}
+
+.background-full {
+	opacity: 0.75;
+	background-image: url("../images/looking_into_distance.jpg");
+	background-repeat: no-repeat;
+	background-position: 50% 0;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 40px;
+    transition: height 0.25s ease-in;
+    height: 100vh;
+}
+
+.topnav {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-align: center;
+}
+.topnav li a {
+	opacity: 1;
+	color: #f2f2f2;
+	font-family: 'Arimo', sans-serif;
+	font-weight: lighter;
+	font-size: 1.25em;
+	text-decoration: none;
+}
+.topnav li a:hover, .topnav li a.selected {
+	color: #ccc;
+}
+
+.footer {
+	border-top: 2px solid #ccc;
+	opacity: 0.75;
+	font-weight: bold;
+	font-family: 'Arimo', sans-serif;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding: 1em;
+	background-color: black;
+	text-align: center;
+}
+.footer p {
+	opacity: 1;
+	color: #f2f2f2;
+}
+
+.featured {
+	border: 2px solid #ccc;
+	width: 100%;
+	opacity: .85;
+	transition: 0.3s ease-in-out;
+}
+.featured:hover {
+	opacity: 1;
+}
+p {
+	font-family: 'Arimo', sans-serif;
+}
+h3 {
+	font-family: 'Arimo', sans-serif;
+}
+h1 {
+	font-family: 'Arimo', sans-serif;
+	color: white;
+	font-size: 5em;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}

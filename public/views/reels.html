@@ -1,0 +1,62 @@
+<div class="container-fluid background">
+	<div class="row" style="text-align: center">
+		<h1>Andrea Moore</h1>
+	</div>
+	<div class="row">
+		<div class="col-sm-12" style="text-align: center">
+			<ul class="topnav list-inline">
+				<li><a ui-sref="home">home</a></li>
+				<li><a ui-sref="pics">photos</a></li>
+				<li><a ui-sref="about">about</a></li>
+	        	<li><a ui-sref="resume">resume</a></li>
+	        	<li><a ui-sref="reels" class="selected">reels</a></li>
+	        	<li><a ui-sref="contact">contact</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="container">		
+	<div ng-if="!contents" style="text-align: center;">
+		<i class="fa fa-spinner fa-spin fa-3x fa-fw" aria-hidden="true"></i>
+	</div>
+	<div ng-repeat="content in contents">
+		<div class="row">
+			<div class="col-sm-12">
+				<h3>{{content.label.data}}</h3>
+				<hr>
+			</div>	
+		</div>
+		<div ng-if="content.content.type.image" class="row">
+			<img class="img-responsive" ng-src="{{content.content.data}}">
+		</div>
+		<div ng-if="content.content.type.text" class="row">
+			<div class="col-sm-12">
+				<p>{{content.content.data}}</p>
+			</div>
+		</div>
+		<div ng-if="content.content.type.video" class="row">
+			<div class="embed-responsive embed-responsive-16by9">
+				<iframe class="embed-responsive-item" ng-src="{{content.content.data}}"></iframe>
+			</div>
+		</div>
+		<div ng-if="content.content.type.wav" class="row">
+			<div class="col-xs-12">
+				<button type="button" class="col-xs-12  btn btn-default" ng-click='content.content.data.paused ? content.content.data.play() : content.content.data.pause()'>
+					<span ng-if="!content.content.data.canPlay" class="col-xs-1">
+						<i class="fa fa-spinner fa-spin fa-1x fa-fw" aria-hidden="true"></i>
+					</span>
+					<span ng-if="content.content.data.canPlay && content.content.data.paused" class="col-xs-1">
+						<i class="fa fa-play" aria-hidden="true"></i>
+					</span> 
+					<span ng-if="content.content.data.canPlay && !content.content.data.paused" class="col-xs-1">
+						<i class="fa fa-stop" aria-hidden="true"></i>
+					</span> 
+					<span class="col-xs-11 badge">
+						<input type=range min=0 max=1 step=0.01 ng-model='content.content.data.progress'>
+					</span>
+				</button>
+			</div>
+		</div>	
+	</div>
+</div>
